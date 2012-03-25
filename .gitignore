@@ -6,6 +6,7 @@
 *.exe
 *.o
 *.so
+bin/
 
 # Packages #
 ############
@@ -31,7 +32,3 @@
 ehthumbs.db
 Icon?
 Thumbs.db
-
-# Eclipse
-.project
-.classpath
