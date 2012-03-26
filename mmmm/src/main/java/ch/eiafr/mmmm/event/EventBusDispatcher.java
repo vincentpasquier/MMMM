@@ -27,7 +27,7 @@ public final class EventBusDispatcher implements Runnable, IEventBusDispatcher {
 		while (!isStopped()) {
 			try {
 				EventMessage message = qEvents.take();
-				
+				System.out.println(message.getSource().toString());
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
