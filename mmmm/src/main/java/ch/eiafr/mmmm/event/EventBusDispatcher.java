@@ -17,7 +17,8 @@ public final class EventBusDispatcher implements Runnable, IEventBusDispatcher {
 		hEvents = new EventsHandler();
 	}
 
-	public void enqueue(EventMessage message) {
+	@Override
+	public void enqueue(final EventMessage message) {
 		try {
 			qEvents.put(message);
 		} catch (InterruptedException e) {
@@ -29,8 +30,8 @@ public final class EventBusDispatcher implements Runnable, IEventBusDispatcher {
 	public void run() {
 		while (!isStopped()) {
 			try {
-				EventMessage message = qEvents.take();
-				Tasks task = Tasks.getTask(message);
+				final EventMessage message = qEvents.take();
+				final Tasks task = Tasks.getTask(message);
 				hEvents.handle(task);
 			} catch (InterruptedException e) {
 				e.printStackTrace();

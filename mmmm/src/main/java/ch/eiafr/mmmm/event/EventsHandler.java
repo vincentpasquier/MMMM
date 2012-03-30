@@ -28,12 +28,12 @@ public final class EventsHandler {
 		} catch (AWTException e) {
 			e.printStackTrace();
 		}
-		Runnable ttTasks = new EventsTaskHandler(sTasks, robot);
+		final Runnable ttTasks = new EventsTaskHandler(sTasks, robot);
 		scheduler.scheduleAtFixedRate(ttTasks, 0, 1000, MILLISECONDS);
 		sStates.add(new InitialInventoryState());
 	}
 
-	public void handle(Tasks task) {
+	public void handle(final Tasks task) {
 		sTasks.add(task);
 		for (State state : sStates) {
 			sStates.remove(state);

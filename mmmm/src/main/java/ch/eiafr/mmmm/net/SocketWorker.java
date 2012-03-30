@@ -11,7 +11,7 @@ public final class SocketWorker implements Runnable {
 	private final Socket client;
 	private final IEventBusDispatcher dispatcher;
 
-	public SocketWorker(Socket clientSocket, IEventBusDispatcher dispatcher) {
+	public SocketWorker(final Socket clientSocket, final IEventBusDispatcher dispatcher) {
 		this.client = clientSocket;
 		this.dispatcher = dispatcher;
 	}

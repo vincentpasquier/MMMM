@@ -23,7 +23,7 @@ public final class SecondStateModality implements State {
 
 	@Override
 	public void execute(final Robot robot) {
-		System.out.println("BLU THE FUCK OUT !");
+		System.out.println("BLU THE FUCK OUT ! [" + inventoryNumber + "]");
 	}
 
 }

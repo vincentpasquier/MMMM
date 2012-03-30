@@ -5,7 +5,7 @@ import java.awt.Robot;
 import ch.eiafr.mmmm.messages.Tasks;
 import ch.eiafr.mmmm.state.State;
 
-public class InitialInventoryState implements State {
+public final class InitialInventoryState implements State {
 
 	@Override
 	public State update(final Tasks task) {
