@@ -8,7 +8,9 @@ import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JPanel;
+import ch.eiafr.mmmm.messages.Tasks;
 
 /**
  * @author yannickjemmely
@@ -22,6 +24,9 @@ public class WiiHandPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	private ActionListener actionListener;
+	
+	private static final int ROWS = 3;
+	private static final int COLS = 2;
 
 	public WiiHandPanel(ActionListener actionListener){
 		
@@ -32,12 +37,14 @@ public class WiiHandPanel extends JPanel {
 	}
 	
 	private void initialize(){
-		setLayout(new BorderLayout());
-		setBorder(BorderFactory.createTitledBorder("WiiHand"));
+		setLayout(new GridLayout(ROWS, COLS));
+		setBorder(BorderFactory.createTitledBorder("WiiHand - Wiimote"));
 	}
 	
 	private void build(){
-		
+		JButton swipeButton = new JButton();
+		swipeButton.setText(String.valueOf(Tasks.INVENTORY_SWIPE));
+		add(swipeButton);
 	}
 
 }

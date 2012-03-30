@@ -32,6 +32,7 @@ public class ControlPanel extends JPanel {
 
 	private JPanel networkPanel = new NetworkPanel();
 	private JPanel wiiHandPanel = new WiiHandPanel(defaultActionListener);
+	private JPanel wiiNunChukPanel = new WiiNunchukPanel();
 	private JPanel wiiHeadPanel = new WiiHeadPanel(defaultActionListener);
 	private JPanel kinectPanel = new KinectPanel(defaultActionListener);
 
@@ -55,6 +56,7 @@ public class ControlPanel extends JPanel {
 	private void build(){
 		add(networkPanel,BorderLayout.NORTH);
 		add(wiiHandPanel,BorderLayout.WEST);
+		add(wiiNunChukPanel,BorderLayout.CENTER);
 		add(wiiHeadPanel,BorderLayout.EAST);
 		add(kinectPanel, BorderLayout.SOUTH);
 

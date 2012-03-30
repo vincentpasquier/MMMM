@@ -42,6 +42,7 @@ public class UserInterfaceManager extends JFrame {
 			public void run() {
 				try {
 					UserInterfaceManager frame = new UserInterfaceManager();
+					frame.setTitle("MMMM | Magnificent Monocle Multimodal Minecraft");
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
