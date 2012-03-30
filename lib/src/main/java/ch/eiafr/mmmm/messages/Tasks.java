@@ -5,7 +5,7 @@ import java.awt.Robot;
 import ch.eiafr.mmmm.net.NetworkMessage.EventMessage;
 import ch.eiafr.mmmm.net.NetworkMessage.EventMessage.Source;
 
-public enum Tasks {
+public enum Tasks implements Executable {
 	INVENTORY_SWIPE("SWIPE") {
 		@Override
 		public void execute(Robot robot) {
@@ -146,6 +146,10 @@ public enum Tasks {
 		this.cancels = cancels;
 		this.continuous = continuous;
 	}
+	
+	public String getIdentifier() {
+		return identifier;
+	}
 
 	public int getValue() {
 		return value;
@@ -163,9 +167,17 @@ public enum Tasks {
 		return source;
 	}
 
-	public Tasks getTask(EventMessage message) {
+	public boolean isContinuous() {
+		return continuous;
+	}
+
+	public Tasks[] getCancels() {
+		return cancels;
+	}
+
+	public static Tasks getTask(EventMessage message) {
 		for (Tasks task : Tasks.values()) {
-			if (message.getNamedEvent().equals(identifier)) {
+			if (message.getNamedEvent().equals(task.identifier)) {
 				if (message.hasValue()) {
 					task.value = message.getValue();
 				}
@@ -178,5 +190,4 @@ public enum Tasks {
 		return null;
 	}
 
-	public abstract void execute(Robot robot);
 }
