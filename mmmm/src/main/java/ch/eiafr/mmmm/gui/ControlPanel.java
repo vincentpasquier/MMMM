@@ -68,7 +68,9 @@ public class ControlPanel extends JPanel {
 		wiiHeadPanel.setLayout(new GridLayout(1, 0, 0, 0));
 	}
 	
-	private void buildKinectPanel()
+	private void buildKinectPanel(){
+		
+	}
 	
 
 }
