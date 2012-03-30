@@ -30,7 +30,7 @@ public class UserInterfaceManager extends JFrame {
 	private JPanel controlPanel = new ControlPanel(actionListener);
 	
 	// settings
-	private static final int WINDOW_WIDTH = 600;
+	private static final int WINDOW_WIDTH = 1000;
 	private static final int WINDOW_HEIGHT = 600;
 	
 
