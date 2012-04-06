@@ -29,7 +29,7 @@ public final class EventsHandler {
 			e.printStackTrace();
 		}
 		final Runnable ttTasks = new EventsTaskHandler(sTasks, robot);
-		scheduler.scheduleAtFixedRate(ttTasks, 0, 1000, MILLISECONDS);
+		scheduler.scheduleAtFixedRate(ttTasks, 0, 100, MILLISECONDS);
 		sStates.add(new InitialInventoryState());
 	}
 
@@ -56,18 +56,16 @@ public final class EventsHandler {
 		@Override
 		public void run() {
 			for (Tasks task : tasks) {
-				System.out.println(task);
 				tasks.remove(task);
 				task.execute(robot);
 				if (task.isContinuous()) {
 					tasks.add(task);
+				} else {
+					for (Tasks canceled : task.getCancels()) {
+						tasks.remove(canceled);
+					}
 				}
 			}
-//			for (Tasks task : tasks) {
-//				for (Tasks canceled : task.getCancels()) {
-//					tasks.remove(canceled);
-//				}
-//			}
 		}
 	}
 }

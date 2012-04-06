@@ -1,6 +1,7 @@
 package ch.eiafr.mmmm.state.inventory;
 
 import java.awt.Robot;
+import java.awt.event.KeyEvent;
 
 import ch.eiafr.mmmm.messages.Tasks;
 import ch.eiafr.mmmm.state.State;
@@ -23,6 +24,8 @@ public final class SecondStateModality implements State {
 
 	@Override
 	public void execute(final Robot robot) {
+		robot.keyPress(KeyEvent.VK_0 + inventoryNumber);
+		robot.keyRelease(KeyEvent.VK_0 + inventoryNumber);
 		System.out.println("BLU THE FUCK OUT ! [" + inventoryNumber + "]");
 	}
 

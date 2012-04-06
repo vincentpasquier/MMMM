@@ -1,6 +1,8 @@
 package ch.eiafr.mmmm.messages;
 
 import java.awt.Robot;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 
 import ch.eiafr.mmmm.net.NetworkMessage.EventMessage;
 import ch.eiafr.mmmm.net.NetworkMessage.EventMessage.Source;
@@ -14,64 +16,74 @@ public enum Tasks implements Executable {
 	PICK_MINE("mine") {
 		@Override
 		public void execute(Robot robot) {
+			robot.mousePress(InputEvent.BUTTON1_MASK);
+			robot.mouseRelease(InputEvent.BUTTON1_MASK);
 		}
 	},
 	PICK_AUTO_START("begin mine") {
 		@Override
 		public void execute(Robot robot) {
+			robot.mousePress(InputEvent.BUTTON1_MASK);
 		}
 	},
 	PICK_AUTO_STOP("end mine") {
 		@Override
 		public void execute(Robot robot) {
+			robot.mouseRelease(InputEvent.BUTTON1_MASK);
 		}
 	},
 	MOVE_FORWARD_START("FORWARD_START", true) {
 		@Override
 		public void execute(Robot robot) {
+			robot.keyPress(KeyEvent.VK_W);
 		}
 	},
 	MOVE_FORWARD_STOP("FORWARD_STOP", new Tasks[] { Tasks.MOVE_FORWARD_START }) {
 		@Override
 		public void execute(Robot robot) {
-			// Nothing, just cancels
+			robot.keyRelease(KeyEvent.VK_W);
 		}
 	},
 	MOVE_BACKWARD_START("BACKWARD_START", true) {
 		@Override
 		public void execute(Robot robot) {
+			robot.keyPress(KeyEvent.VK_S);
 		}
 	},
 	MOVE_BACKWARD_STOP("BACKWARD_STOP", new Tasks[] { Tasks.MOVE_BACKWARD_START }) {
 		@Override
 		public void execute(Robot robot) {
-			// Nothing, just cancels
+			robot.keyRelease(KeyEvent.VK_S);
 		}
 	},
 	MOVE_LEFT_START("LEFT_START", true) {
 		@Override
 		public void execute(Robot robot) {
-
+			robot.keyPress(KeyEvent.VK_A);
 		}
 	},
 	MOVE_LEFT_STOP("LEFT_STOP", new Tasks[] { Tasks.MOVE_LEFT_START }) {
 		@Override
 		public void execute(Robot robot) {
+			robot.keyRelease(KeyEvent.VK_A);
 		}
 	},
 	MOVE_RIGHT_START("RIGHT_START", true) {
 		@Override
 		public void execute(Robot robot) {
+			robot.keyPress(KeyEvent.VK_D);
 		}
 	},
 	MOVE_RIGHT_STOP("RIGHT_STOP", new Tasks[] { Tasks.MOVE_RIGHT_START }) {
 		@Override
 		public void execute(Robot robot) {
+			robot.keyRelease(KeyEvent.VK_D);
 		}
 	},
 	SIGHT_UP_LEFT("S_UL", true) {
 		@Override
 		public void execute(Robot robot) {
+			//robot.mouseMove(1, 1);
 		}
 	},
 	SIGHT_UP("S_U", true) {

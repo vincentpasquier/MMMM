@@ -32,7 +32,9 @@ public final class EventBusDispatcher implements Runnable, IEventBusDispatcher {
 			try {
 				final EventMessage message = qEvents.take();
 				final Tasks task = Tasks.getTask(message);
-				hEvents.handle(task);
+				if (task != null) {
+					hEvents.handle(task);
+				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
