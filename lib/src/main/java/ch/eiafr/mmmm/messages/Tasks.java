@@ -11,17 +11,17 @@ public enum Tasks implements Executable {
 		public void execute(Robot robot) {
 		}
 	},
-	PICK_MINE("MINE") {
+	PICK_MINE("mine") {
 		@Override
 		public void execute(Robot robot) {
 		}
 	},
-	PICK_AUTO_START("MINE_START") {
+	PICK_AUTO_START("begin mine") {
 		@Override
 		public void execute(Robot robot) {
 		}
 	},
-	PICK_AUTO_STOP("MINE_STOP") {
+	PICK_AUTO_STOP("end mine") {
 		@Override
 		public void execute(Robot robot) {
 		}

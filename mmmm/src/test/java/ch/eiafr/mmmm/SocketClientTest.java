@@ -16,28 +16,27 @@ public final class SocketClientTest {
 
 	private static final Random random = new Random();
 
-	public static void main(String[] args) throws UnknownHostException, IOException, InterruptedException {
-		for (int i = 0; i < 10000; i++) {
-			EventMessage msg = buildRandomEventMessages();
-			send(msg);
-		}
-	}
-
-	// @Test
-	// public void testSwipeOne() throws UnknownHostException, IOException {
-	// long timestamp = System.currentTimeMillis();
-	// EventMessage msg = buildSpecifiedMessage(Tasks.INVENTORY_SWIPE,
-	// Source.WII_HAND, timestamp, 1000, 0);
+	// public static void main(String[] args) throws UnknownHostException,
+	// IOException, InterruptedException {
+	// for (int i = 0; i < 10000; i++) {
+	// EventMessage msg = buildRandomEventMessages();
 	// send(msg);
-	// msg = buildSpecifiedMessage(Tasks.INVENTORY_NUMBER, Source.KINECT,
-	// timestamp + 100, 1000, 1);
-	// send(msg);
-	// send(buildRandomEventMessages());
 	// }
+	// }
+
+	@Test
+	public void testSwipeOne() throws UnknownHostException, IOException {
+		long timestamp = System.currentTimeMillis();
+		EventMessage msg = buildSpecifiedMessage(Tasks.INVENTORY_SWIPE, Source.WII_HAND, timestamp, 1000, 0);
+		send(msg);
+		msg = buildSpecifiedMessage(Tasks.INVENTORY_NUMBER, Source.KINECT, timestamp + 100, 1000, 1);
+		send(msg);
+		send(buildRandomEventMessages());
+	}
 
 	private static void send(EventMessage message) throws UnknownHostException, IOException {
 		Socket s = new Socket("localhost", EventBusServer.LISTEN_PORT);
-		message.writeTo(s.getOutputStream());
+		s.getOutputStream().write(message.toByteArray());
 		s.close();
 	}
 
