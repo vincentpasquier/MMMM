@@ -3,15 +3,10 @@
  */
 package ch.eiafr.mmmm.gui.panel;
 
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+
+
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import javax.swing.JButton;
-
-import ch.eiafr.mmmm.gui.listener.DefaultActionListener;
-
-import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
 /**
@@ -19,8 +14,7 @@ import java.awt.event.ActionListener;
  *
  */
 public class ControlPanel extends JPanel {
-
-
+ 
 	/**
 	 * 
 	 */
@@ -28,21 +22,21 @@ public class ControlPanel extends JPanel {
 
 	private static final String name = "Control";
 	
-	private ActionListener defaultActionListener;;
 
-	private JPanel networkPanel = new NetworkPanel();
-	private JPanel wiiHandPanel = new WiiHandPanel(defaultActionListener);
-	private JPanel wiiNunChukPanel = new WiiNunchukPanel();
-	private JPanel wiiHeadPanel = new WiiHeadPanel(defaultActionListener);
-	private JPanel kinectPanel = new KinectPanel(defaultActionListener);
+	private JPanel networkPanel;
+	private JPanel wiiHandPanel;
+	private JPanel wiiHeadPanel;
+	private JPanel kinectPanel;
 
 
 	/**
 	 * Create the panel.
 	 */
-	public ControlPanel(ActionListener actionListener) {
-		
-		defaultActionListener = actionListener;
+	public ControlPanel() {
+		networkPanel = new NetworkPanel();
+		wiiHandPanel = new WiiHandPanel();
+		wiiHeadPanel = new WiiHeadPanel();
+		kinectPanel = new KinectPanel();
 		
 		initilize();		
 		build();
@@ -56,7 +50,6 @@ public class ControlPanel extends JPanel {
 	private void build(){
 		add(networkPanel,BorderLayout.NORTH);
 		add(wiiHandPanel,BorderLayout.WEST);
-		add(wiiNunChukPanel,BorderLayout.CENTER);
 		add(wiiHeadPanel,BorderLayout.EAST);
 		add(kinectPanel, BorderLayout.SOUTH);
 

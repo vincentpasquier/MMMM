@@ -5,15 +5,11 @@ package ch.eiafr.mmmm.gui;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextPane;
 
-import ch.eiafr.mmmm.gui.listener.DefaultActionListener;
 import ch.eiafr.mmmm.gui.panel.ControlPanel;
 
 /**
@@ -22,16 +18,19 @@ import ch.eiafr.mmmm.gui.panel.ControlPanel;
  */
 public class UserInterfaceManager extends JFrame {
 	
-	//actionlistener
-	private ActionListener actionListener = new DefaultActionListener();
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	// panel
 	private JPanel contentPane = new JPanel();
-	private JPanel controlPanel = new ControlPanel(actionListener);
+	private JPanel controlPanel;
 	
 	// settings
 	private static final int WINDOW_WIDTH = 1000;
 	private static final int WINDOW_HEIGHT = 600;
+
 	
 
 	/**
@@ -55,7 +54,7 @@ public class UserInterfaceManager extends JFrame {
 	 * Create the frame.
 	 */
 	public UserInterfaceManager() {
-		
+		controlPanel = new ControlPanel();
 		build();
 		
 	}

@@ -4,6 +4,7 @@
 package ch.eiafr.mmmm.gui.panel;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
@@ -19,6 +20,11 @@ import ch.eiafr.mmmm.messages.Tasks;
  *
  */
 public class WiiHeadPanel extends JPanel {
+	
+	private static String[] directions = {
+		String.valueOf(Tasks.values()[0]),
+		String.valueOf(Tasks.values()[3])
+	};
 
 	/**
 	 * 
@@ -28,9 +34,8 @@ public class WiiHeadPanel extends JPanel {
 
 	private ActionListener actionListener;
 
-	public WiiHeadPanel(ActionListener actionListener){
+	public WiiHeadPanel(){
 
-		this.actionListener = actionListener;
 
 		initialize();
 		build();
@@ -44,6 +49,7 @@ public class WiiHeadPanel extends JPanel {
 	private void build(){
 		for(int i = 0 ; i < DIRECTION_PANEL_SIZE*DIRECTION_PANEL_SIZE ; i++){
 			JToggleButton button = new JToggleButton();
+			button.setPreferredSize(new Dimension(150, 100));
 			button.setText(String.valueOf(Tasks.values()[i]));
 			add(button);
 		}

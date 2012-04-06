@@ -11,8 +11,12 @@ import javax.swing.JTextField;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JList;
+
+import ch.eiafr.mmmm.gui.ServerAddress;
 
 /**
  * @author yannickjemmely
@@ -23,6 +27,8 @@ public class NetworkPanel extends JPanel {
 	private static final String labelAddressText = "Address";
 	private static final String labelPortText = "Port";
 	private static final String labelSaveText = "Save";
+	
+	private ActionListener actionListener;
 	
 
 	/**
@@ -42,10 +48,18 @@ public class NetworkPanel extends JPanel {
 	private void build(){
 		
 		JLabel labelAdresse = new JLabel(labelAddressText);
-		JTextField fieldAddress = new JTextField(10);
+		final JTextField fieldAddress = new JTextField(10);
 		JLabel labelPort = new JLabel(labelPortText);
-		JTextField fieldPort = new JTextField(10);
+		final JTextField fieldPort = new JTextField(10);
 		JButton buttonSave = new JButton(labelSaveText);
+		buttonSave.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ServerAddress.INSTANCE.setAddress(fieldAddress.getText());
+				ServerAddress.INSTANCE.setPort(Integer.parseInt(fieldPort.getText()));
+			}
+		});
 	
 		add(labelAdresse);
 		add(fieldAddress);
