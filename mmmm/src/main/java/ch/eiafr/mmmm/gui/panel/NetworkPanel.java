@@ -16,7 +16,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JList;
 
-import ch.eiafr.mmmm.gui.ServerAddress;
+import ch.eiafr.mmmm.gui.singleton.ServerAddress;
 
 /**
  * @author yannickjemmely
@@ -49,8 +49,10 @@ public class NetworkPanel extends JPanel {
 		
 		JLabel labelAdresse = new JLabel(labelAddressText);
 		final JTextField fieldAddress = new JTextField(10);
+		fieldAddress.setText(ServerAddress.INSTANCE.getAddress());
 		JLabel labelPort = new JLabel(labelPortText);
 		final JTextField fieldPort = new JTextField(10);
+		fieldPort.setText(String.valueOf(ServerAddress.INSTANCE.getPort()));
 		JButton buttonSave = new JButton(labelSaveText);
 		buttonSave.addActionListener(new ActionListener() {
 			

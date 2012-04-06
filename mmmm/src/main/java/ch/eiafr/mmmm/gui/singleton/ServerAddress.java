@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ch.eiafr.mmmm.gui;
+package ch.eiafr.mmmm.gui.singleton;
 
 /**
  * @author yannickjemmely
@@ -13,6 +13,8 @@ public enum ServerAddress {
 	private int port;
 
 	private ServerAddress() {
+		address = "160.98.113.217";
+		port = 4444;
 	}
 
 	/**

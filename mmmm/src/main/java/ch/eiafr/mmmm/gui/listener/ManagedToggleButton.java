@@ -11,6 +11,7 @@ import java.net.UnknownHostException;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JToggleButton;
 
 import ch.eiafr.mmmm.gui.singleton.Console;
 import ch.eiafr.mmmm.gui.singleton.ServerAddress;
@@ -22,29 +23,34 @@ import ch.eiafr.mmmm.net.NetworkMessage.EventMessage.Source;
  * @author yannickjemmely
  * 
  */
-public class ManagedButton implements ActionListener {
+public class ManagedToggleButton implements ActionListener {
 
-	private final Tasks task;
+	private final Tasks start;
+	private final Tasks stop;
 	private final int value;
 	private final Source source;
-	private final JButton jb;
+	private final JToggleButton jb;
 
-	public ManagedButton(final Tasks task) {
-		this(task, 0);
-	}
-	
-	public ManagedButton(final Tasks task, final int value) {
-		this(task, value, Source.WII_HAND);
+	public ManagedToggleButton(final Tasks start, final Tasks stop) {
+		this(start, stop, 0);
 	}
 
-	public ManagedButton(final Tasks task, final int value, final Source source) {
-		this.task = task;
+	public ManagedToggleButton(final Tasks start, final Tasks stop,
+			final int value) {
+		this(start, stop, value, Source.WII_HAND);
+	}
+
+	public ManagedToggleButton(final Tasks start, final Tasks stop,
+			final int value, final Source source) {
+		this.start = start;
+		this.stop = stop;
 		this.value = value;
 		this.source = source;
-		jb = new JButton(task.getIdentifier() + " " + (value != 0 ? value : ""));
+		jb = new JToggleButton(start.getIdentifier() + " "
+				+ (value != 0 ? value : ""));
 		jb.addActionListener(this);
 	}
-	
+
 	public void addToComponent(final JComponent comp) {
 		comp.add(jb);
 	}
@@ -57,18 +63,24 @@ public class ManagedButton implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		EventMessage msg = EventMessage.newBuilder().setDuration(2000)
-				.setTimestamp(System.currentTimeMillis())
-				.setNamedEvent(task.getIdentifier())
-				.setSource(source).setValue(value)
-				.build();
+
+		EventMessage msg;
+		String id = jb.isSelected() ? start.getIdentifier() : stop
+				.getIdentifier();
+		jb.setText(id);
+		msg = EventMessage.newBuilder().setDuration(2000)
+				.setTimestamp(System.currentTimeMillis()).setNamedEvent(id)
+				.setSource(source).setValue(value).build();
+
 		send(msg);
 		Console.INSTANCE.display(msg);
+		//System.out.println(msg.toString());
 	}
 
 	private static void send(EventMessage message) {
 		try {
-			Socket s = new Socket(ServerAddress.INSTANCE.getAddress(), ServerAddress.INSTANCE.getPort());
+			Socket s = new Socket(ServerAddress.INSTANCE.getAddress(),
+					ServerAddress.INSTANCE.getPort());
 			message.writeTo(s.getOutputStream());
 			s.close();
 		} catch (UnknownHostException e) {

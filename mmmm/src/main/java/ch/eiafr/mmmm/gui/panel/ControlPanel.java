@@ -3,11 +3,13 @@
  */
 package ch.eiafr.mmmm.gui.panel;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import ch.eiafr.mmmm.gui.singleton.Console;
 
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionListener;
 
 /**
  * @author yannickjemmely
@@ -19,10 +21,8 @@ public class ControlPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
 	private static final String name = "Control";
 	
-
 	private JPanel networkPanel;
 	private JPanel wiiHandPanel;
 	private JPanel wiiHeadPanel;
@@ -48,10 +48,19 @@ public class ControlPanel extends JPanel {
 	}
 	
 	private void build(){
-		add(networkPanel,BorderLayout.NORTH);
-		add(wiiHandPanel,BorderLayout.WEST);
-		add(wiiHeadPanel,BorderLayout.EAST);
-		add(kinectPanel, BorderLayout.SOUTH);
+		JPanel control = new JPanel(new BorderLayout());
+		control.add(networkPanel,BorderLayout.NORTH);
+		control.add(wiiHandPanel,BorderLayout.WEST);
+		control.add(wiiHeadPanel,BorderLayout.EAST);
+		control.add(kinectPanel, BorderLayout.SOUTH);
+		
+		add(control,BorderLayout.CENTER);
+		
+		JPanel consolePanel = new JPanel(new BorderLayout());
+		//consolePanel.add((new JLabel("asdfasdf")));
+		Console.INSTANCE.addToComp(consolePanel);
+		
+		add(consolePanel,BorderLayout.SOUTH);		
 
 	}
 	

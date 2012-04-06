@@ -58,23 +58,7 @@ public class KinectPanel extends JPanel {
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
-		private static final int NUMBER_PANEL_SIZE = 3;
-		
-		private ActionListener actionListener;
-		
-		private enum numbers {
-			ONE,
-			TWO,
-			THREE,
-			FOUR,
-			FIVE,
-			SIX,
-			SEVEN,
-			EIGHT,
-			NINE,
-		};
-		
-		
+		private static final int NUMBER_PANEL_SIZE = 3;		
 		
 		private KinectItemPanel(){
 			
@@ -90,11 +74,9 @@ public class KinectPanel extends JPanel {
 		private void build(){
 			
 			
-			for(int i = 0; i < NUMBER_PANEL_SIZE*NUMBER_PANEL_SIZE ; i++){
-				JButton button = new JButton();
-				button.addActionListener(actionListener);
-				button.setText(numbers.values()[i].toString());
-				add(button);
+			for(int i = 0; i < NUMBER_PANEL_SIZE*NUMBER_PANEL_SIZE ; i++){				
+				ManagedButton button = new ManagedButton(Tasks.INVENTORY_NUMBER, i+1);
+				button.addToComponent(this);
 			}
 		}
 

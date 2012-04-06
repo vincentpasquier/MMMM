@@ -10,9 +10,11 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
+import ch.eiafr.mmmm.gui.listener.ManagedButton;
 import ch.eiafr.mmmm.messages.Tasks;
 
 /**
@@ -21,9 +23,16 @@ import ch.eiafr.mmmm.messages.Tasks;
  */
 public class WiiHeadPanel extends JPanel {
 	
-	private static String[] directions = {
-		String.valueOf(Tasks.values()[0]),
-		String.valueOf(Tasks.values()[3])
+	private final Tasks[] moveTasks = {
+			Tasks.SIGHT_UP_LEFT,
+			Tasks.SIGHT_UP,
+			Tasks.SIGHT_UP_RIGHT,
+			Tasks.SIGHT_LEFT,
+			Tasks.SIGHT_CENTER,
+			Tasks.SIGHT_RIGHT,
+			Tasks.SIGHT_DOWN_LEFT,
+			Tasks.SIGHT_DOWN,
+			Tasks.SIGHT_DOWN_RIGHT
 	};
 
 	/**
@@ -32,11 +41,7 @@ public class WiiHeadPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private static final int DIRECTION_PANEL_SIZE = 3;
 
-	private ActionListener actionListener;
-
 	public WiiHeadPanel(){
-
-
 		initialize();
 		build();
 	}
@@ -48,10 +53,10 @@ public class WiiHeadPanel extends JPanel {
 
 	private void build(){
 		for(int i = 0 ; i < DIRECTION_PANEL_SIZE*DIRECTION_PANEL_SIZE ; i++){
-			JToggleButton button = new JToggleButton();
-			button.setPreferredSize(new Dimension(150, 100));
-			button.setText(String.valueOf(Tasks.values()[i]));
-			add(button);
+
+			ManagedButton button = new ManagedButton(moveTasks[i]);
+			button.addToComponent(this);
+
 		}
 	}
 
