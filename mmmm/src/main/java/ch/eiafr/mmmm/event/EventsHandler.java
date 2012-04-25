@@ -4,9 +4,6 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 import java.awt.AWTException;
 import java.awt.Robot;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.Executors;
@@ -15,6 +12,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import ch.eiafr.mmmm.messages.Tasks;
 import ch.eiafr.mmmm.state.State;
 import ch.eiafr.mmmm.state.inventory.InitialInventoryState;
+import ch.eiafr.mmmm.state.mouse.MouseState;
 import ch.eiafr.mmmm.state.sight.SightState;
 
 public final class EventsHandler {
@@ -39,10 +37,11 @@ public final class EventsHandler {
 		scheduler.scheduleAtFixedRate(ttTasks, 0, 150, MILLISECONDS);
 		sStates.add(new InitialInventoryState());
 		sStates.add(new SightState());
+		sStates.add(new MouseState());
 	}
 
 	public void handle(final Tasks task) {
-		System.out.println(task.getIdentifier());
+		System.out.println(task);
 		sTasks.add(task);
 		for (State state : sStates) {
 			sStates.remove(state);
@@ -65,20 +64,17 @@ public final class EventsHandler {
 
 		@Override
 		public void run() {
-			Set<Tasks> copiedTasks = new HashSet<Tasks>(tasks);
-			for (Tasks task : copiedTasks) {
+			for (Tasks task : tasks) {
 				task.execute(robot);
-				copiedTasks.remove(task);
+				tasks.remove(task);
 				if (task.isContinuous()) {
-					copiedTasks.add(task);
+					tasks.add(task);
 				} else {
 					for (Tasks canceled : task.getCancels()) {
-						copiedTasks.remove(canceled);
+						tasks.remove(canceled);
 					}
 				}
 			}
-			tasks.clear();
-			tasks.addAll(copiedTasks);
 		}
 	}
 }

@@ -15,9 +15,9 @@ public final class KinectModalityInventoryState extends FirstInventoryState {
 	public State update(Tasks task) {
 		if (isValid(task)) {
 			if (task.equals(Tasks.INVENTORY_NUMBER)) {
-				return new SecondStateModality(this.getTask().getValue());
+				return new KinectModalityInventoryState(task);
 			} else if (task.equals(Tasks.INVENTORY_SWIPE)) {
-				return new SecondStateModality();
+				return new SecondStateModality(getTask().getValue());
 			} else {
 				return this;
 			}

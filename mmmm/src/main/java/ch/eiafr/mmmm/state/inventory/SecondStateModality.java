@@ -19,7 +19,7 @@ public final class SecondStateModality implements State {
 
 	@Override
 	public State update(final Tasks task) {
-		return new InitialInventoryState();
+		return new InitialInventoryState().update(task);
 	}
 
 	@Override

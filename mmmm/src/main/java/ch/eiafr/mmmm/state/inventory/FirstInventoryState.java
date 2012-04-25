@@ -17,7 +17,7 @@ public abstract class FirstInventoryState implements State {
 
 	protected boolean isValid(final Tasks task) {
 		long ttl = this.task.getTimestamp() + this.task.getDuration();
-		return ttl <= task.getTimestamp();
+		return (ttl - task.getTimestamp()) > 0;
 	}
 
 }

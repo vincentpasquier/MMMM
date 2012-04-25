@@ -8,7 +8,7 @@ import ch.eiafr.mmmm.net.NetworkMessage.EventMessage;
 import ch.eiafr.mmmm.net.NetworkMessage.EventMessage.Source;
 
 public enum Tasks implements Executable {
-	INVENTORY_SWIPE("SWIPE") {
+	INVENTORY_SWIPE("dos") {
 		@Override
 		public void execute(Robot robot) {
 		}
@@ -21,21 +21,23 @@ public enum Tasks implements Executable {
 	PICK_MINE("mine") {
 		@Override
 		public void execute(Robot robot) {
-			robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-			System.out.println("Mined");
-			robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
 		}
 	},
 	PICK_AUTO_START("begin mine", true) {
 		@Override
 		public void execute(Robot robot) {
-			robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-			robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
 		}
 	},
 	PICK_AUTO_STOP("end mine", new Tasks[] { PICK_AUTO_START }) {
 		@Override
 		public void execute(Robot robot) {
+		}
+	},
+	PUT_BLOCK("PUT_BLOCK") {
+		@Override
+		public void execute(Robot robot) {
+			robot.mousePress(InputEvent.BUTTON2_MASK);
+			robot.mouseRelease(InputEvent.BUTTON2_MASK);
 		}
 	},
 	MOVE_FORWARD_START("FORWARD_START", true) {
@@ -193,7 +195,7 @@ public enum Tasks implements Executable {
 				if (message.hasValue()) {
 					task.value = message.getValue();
 				}
-				task.timestamp = message.getTimestamp();
+				task.timestamp = System.currentTimeMillis();
 				task.duration = message.getDuration();
 				task.source = message.getSource();
 				return task;
@@ -206,6 +208,16 @@ public enum Tasks implements Executable {
 		EventMessage.Builder builder = EventMessage.newBuilder();
 		builder.setDuration(2000).setNamedEvent(task.getIdentifier()).setSource(source).setTimestamp(System.currentTimeMillis()).setValue(0);
 		return builder.build();
+	}
+
+	public String toString() {
+		final String SEPARATOR = "**********************\n";
+		StringBuilder sb = new StringBuilder();
+		sb.append(SEPARATOR).append("Name: ").append(identifier);
+		sb.append("\nValue: ").append(value);
+		sb.append("\nTimestamp: ").append(timestamp);
+		sb.append("\nDuration: ").append(duration);
+		return sb.toString();
 	}
 
 }

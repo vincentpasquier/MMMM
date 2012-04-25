@@ -15,9 +15,9 @@ public final class WiiModalityInventoryState extends FirstInventoryState {
 	public State update(final Tasks task) {
 		if (isValid(task)) {
 			if (task.equals(Tasks.INVENTORY_NUMBER)) {
-				return new SecondStateModality();
+				return new SecondStateModality(task.getValue());
 			} else if (task.equals(Tasks.INVENTORY_SWIPE)) {
-				return new SecondStateModality(this.getTask().getValue());
+				return new WiiModalityInventoryState(task);
 			} else {
 				return this;
 			}
