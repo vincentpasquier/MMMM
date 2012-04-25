@@ -1,13 +1,7 @@
-/**
- * 
- */
 package ch.eiafr.mmmm.gui.listener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -17,6 +11,7 @@ import ch.eiafr.mmmm.gui.singleton.ServerAddress;
 import ch.eiafr.mmmm.messages.Tasks;
 import ch.eiafr.mmmm.net.NetworkMessage.EventMessage;
 import ch.eiafr.mmmm.net.NetworkMessage.EventMessage.Source;
+import ch.eiafr.mmmm.net.SocketThreadedTasksSender;
 
 /**
  * @author yannickjemmely
@@ -32,7 +27,7 @@ public class ManagedButton implements ActionListener {
 	public ManagedButton(final Tasks task) {
 		this(task, 0);
 	}
-	
+
 	public ManagedButton(final Tasks task, final int value) {
 		this(task, value, Source.WII_HAND);
 	}
@@ -44,38 +39,16 @@ public class ManagedButton implements ActionListener {
 		jb = new JButton(task.getIdentifier() + " " + (value != 0 ? value : ""));
 		jb.addActionListener(this);
 	}
-	
+
 	public void addToComponent(final JComponent comp) {
 		comp.add(jb);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		EventMessage msg = EventMessage.newBuilder().setDuration(2000)
-				.setTimestamp(System.currentTimeMillis())
-				.setNamedEvent(task.getIdentifier())
-				.setSource(source).setValue(value)
-				.build();
-		send(msg);
-		Console.INSTANCE.display(msg);
-	}
-
-	private static void send(EventMessage message) {
-		try {
-			Socket s = new Socket(ServerAddress.INSTANCE.getAddress(), ServerAddress.INSTANCE.getPort());
-			message.writeTo(s.getOutputStream());
-			s.close();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
+		EventMessage msg = EventMessage.newBuilder().setDuration(4000).setTimestamp(System.currentTimeMillis()).setNamedEvent(task.getIdentifier())
+				.setSource(source).setValue(value).build();
+		new SocketThreadedTasksSender(ServerAddress.INSTANCE.getAddress(), ServerAddress.INSTANCE.getPort(), msg).execute();
+		Console.INSTANCE.display(msg.toString());
 	}
 }

@@ -5,11 +5,7 @@ package ch.eiafr.mmmm.gui.listener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
 
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JToggleButton;
 
@@ -18,6 +14,7 @@ import ch.eiafr.mmmm.gui.singleton.ServerAddress;
 import ch.eiafr.mmmm.messages.Tasks;
 import ch.eiafr.mmmm.net.NetworkMessage.EventMessage;
 import ch.eiafr.mmmm.net.NetworkMessage.EventMessage.Source;
+import ch.eiafr.mmmm.net.SocketThreadedTasksSender;
 
 /**
  * @author yannickjemmely
@@ -35,19 +32,16 @@ public class ManagedToggleButton implements ActionListener {
 		this(start, stop, 0);
 	}
 
-	public ManagedToggleButton(final Tasks start, final Tasks stop,
-			final int value) {
+	public ManagedToggleButton(final Tasks start, final Tasks stop, final int value) {
 		this(start, stop, value, Source.WII_HAND);
 	}
 
-	public ManagedToggleButton(final Tasks start, final Tasks stop,
-			final int value, final Source source) {
+	public ManagedToggleButton(final Tasks start, final Tasks stop, final int value, final Source source) {
 		this.start = start;
 		this.stop = stop;
 		this.value = value;
 		this.source = source;
-		jb = new JToggleButton(start.getIdentifier() + " "
-				+ (value != 0 ? value : ""));
+		jb = new JToggleButton(start.getIdentifier() + " " + (value != 0 ? value : ""));
 		jb.addActionListener(this);
 	}
 
@@ -55,39 +49,16 @@ public class ManagedToggleButton implements ActionListener {
 		comp.add(jb);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		EventMessage msg;
-		String id = jb.isSelected() ? start.getIdentifier() : stop
-				.getIdentifier();
+		String id = jb.isSelected() ? start.getIdentifier() : stop.getIdentifier();
 		jb.setText(id);
-		msg = EventMessage.newBuilder().setDuration(2000)
-				.setTimestamp(System.currentTimeMillis()).setNamedEvent(id)
+		final EventMessage msg = EventMessage.newBuilder().setDuration(4000).setTimestamp(System.currentTimeMillis()).setNamedEvent(id)
 				.setSource(source).setValue(value).build();
 
-		send(msg);
-		Console.INSTANCE.display(msg);
-		//System.out.println(msg.toString());
-	}
-
-	private static void send(EventMessage message) {
-		try {
-			Socket s = new Socket(ServerAddress.INSTANCE.getAddress(),
-					ServerAddress.INSTANCE.getPort());
-			message.writeTo(s.getOutputStream());
-			s.close();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
+		new SocketThreadedTasksSender(ServerAddress.INSTANCE.getAddress(), ServerAddress.INSTANCE.getPort(), msg).execute();
+		Console.INSTANCE.display(msg.toString());
+		System.out.println(msg.toString());
 	}
 }

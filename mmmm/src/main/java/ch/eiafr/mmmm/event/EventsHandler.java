@@ -4,6 +4,9 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 import java.awt.AWTException;
 import java.awt.Robot;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.Executors;
@@ -12,6 +15,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import ch.eiafr.mmmm.messages.Tasks;
 import ch.eiafr.mmmm.state.State;
 import ch.eiafr.mmmm.state.inventory.InitialInventoryState;
+import ch.eiafr.mmmm.state.sight.SightState;
 
 public final class EventsHandler {
 
@@ -23,22 +27,28 @@ public final class EventsHandler {
 	public EventsHandler() {
 		sStates = new CopyOnWriteArraySet<State>();
 		sTasks = new CopyOnWriteArraySet<Tasks>();
+
 		try {
 			robot = new Robot();
 		} catch (AWTException e) {
 			e.printStackTrace();
 		}
+
+		robot.setAutoDelay(10);
 		final Runnable ttTasks = new EventsTaskHandler(sTasks, robot);
-		scheduler.scheduleAtFixedRate(ttTasks, 0, 100, MILLISECONDS);
+		scheduler.scheduleAtFixedRate(ttTasks, 0, 150, MILLISECONDS);
 		sStates.add(new InitialInventoryState());
+		sStates.add(new SightState());
 	}
 
 	public void handle(final Tasks task) {
+		System.out.println(task.getIdentifier());
 		sTasks.add(task);
 		for (State state : sStates) {
 			sStates.remove(state);
-			state.execute(robot);
-			sStates.add(state.update(task));
+			State update = state.update(task);
+			update.execute(robot);
+			sStates.add(update);
 		}
 
 	}
@@ -55,17 +65,20 @@ public final class EventsHandler {
 
 		@Override
 		public void run() {
-			for (Tasks task : tasks) {
-				tasks.remove(task);
+			Set<Tasks> copiedTasks = new HashSet<Tasks>(tasks);
+			for (Tasks task : copiedTasks) {
 				task.execute(robot);
+				copiedTasks.remove(task);
 				if (task.isContinuous()) {
-					tasks.add(task);
+					copiedTasks.add(task);
 				} else {
 					for (Tasks canceled : task.getCancels()) {
-						tasks.remove(canceled);
+						copiedTasks.remove(canceled);
 					}
 				}
 			}
+			tasks.clear();
+			tasks.addAll(copiedTasks);
 		}
 	}
 }

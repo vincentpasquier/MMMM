@@ -3,5 +3,11 @@
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/lib"/>
+	<classpathentry kind="lib" path="/lib/src/main/resources/bluecove-gpl-2.1.0.jar"/>
+	<classpathentry kind="lib" path="/lib/src/main/resources/slf4j-api-1.6.4.jar"/>
+	<classpathentry kind="lib" path="/lib/src/main/resources/slf4j-simple-1.6.4.jar"/>
+	<classpathentry kind="lib" path="/lib/src/main/resources/motej-library-0.9.jar"/>
+	<classpathentry kind="lib" path="/lib/src/main/resources/protobuf-java-2.4.1.jar"/>
+	<classpathentry kind="lib" path="/lib/src/main/resources/bluecove-2.1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -3,7 +3,6 @@ package ch.eiafr.mmmm;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Random;
 
 import org.junit.Test;
 
@@ -14,7 +13,7 @@ import ch.eiafr.mmmm.net.NetworkMessage.EventMessage.Source;
 
 public final class SocketClientTest {
 
-	private static final Random random = new Random();
+//	private static final Random random = new Random();
 
 	// public static void main(String[] args) throws UnknownHostException,
 	// IOException, InterruptedException {
@@ -31,7 +30,6 @@ public final class SocketClientTest {
 		send(msg);
 		msg = buildSpecifiedMessage(Tasks.INVENTORY_NUMBER, Source.KINECT, timestamp + 100, 1000, 1);
 		send(msg);
-		send(buildRandomEventMessages());
 	}
 
 	private static void send(EventMessage message) throws UnknownHostException, IOException {
@@ -40,16 +38,16 @@ public final class SocketClientTest {
 		s.close();
 	}
 
-	private static EventMessage buildRandomEventMessages() {
-		Tasks task = Tasks.values()[random.nextInt(Tasks.values().length)];
-		EventMessage.Builder builder = EventMessage.newBuilder();
-		builder.setDuration(random.nextInt(10000));
-		builder.setNamedEvent(task.getIdentifier());
-		builder.setSource(Source.values()[random.nextInt(Source.values().length)]);
-		builder.setTimestamp(System.currentTimeMillis());
-		builder.setValue(random.nextInt(10));
-		return builder.build();
-	}
+	// private static EventMessage buildRandomEventMessages() {
+	// Tasks task = Tasks.values()[random.nextInt(Tasks.values().length)];
+	// EventMessage.Builder builder = EventMessage.newBuilder();
+	// builder.setDuration(random.nextInt(10000));
+	// builder.setNamedEvent(task.getIdentifier());
+	// builder.setSource(Source.values()[random.nextInt(Source.values().length)]);
+	// builder.setTimestamp(System.currentTimeMillis());
+	// builder.setValue(random.nextInt(10));
+	// return builder.build();
+	// }
 
 	private static EventMessage buildSpecifiedMessage(Tasks task, Source source, long timestamp, int duration, int value) {
 		EventMessage.Builder builder = EventMessage.newBuilder();

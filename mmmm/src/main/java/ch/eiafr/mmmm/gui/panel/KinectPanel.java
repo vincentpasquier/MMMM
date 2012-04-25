@@ -5,14 +5,10 @@ package ch.eiafr.mmmm.gui.panel;
 
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.beans.PropertyChangeListener;
 
-import javax.swing.Action;
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JPanel;
+
 import ch.eiafr.mmmm.gui.listener.ManagedButton;
 import ch.eiafr.mmmm.messages.Tasks;
 

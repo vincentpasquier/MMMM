@@ -3,16 +3,10 @@
  */
 package ch.eiafr.mmmm.gui.panel;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JToggleButton;
 
 import ch.eiafr.mmmm.gui.listener.ManagedButton;
 import ch.eiafr.mmmm.messages.Tasks;

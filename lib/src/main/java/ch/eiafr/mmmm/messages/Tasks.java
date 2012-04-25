@@ -13,23 +13,29 @@ public enum Tasks implements Executable {
 		public void execute(Robot robot) {
 		}
 	},
+	INVENTORY_NUMBER("INV_NUMB") {
+		@Override
+		public void execute(Robot robot) {
+		}
+	},
 	PICK_MINE("mine") {
 		@Override
 		public void execute(Robot robot) {
-			robot.mousePress(InputEvent.BUTTON1_MASK);
-			robot.mouseRelease(InputEvent.BUTTON1_MASK);
+			robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+			System.out.println("Mined");
+			robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
 		}
 	},
-	PICK_AUTO_START("begin mine") {
+	PICK_AUTO_START("begin mine", true) {
 		@Override
 		public void execute(Robot robot) {
-			robot.mousePress(InputEvent.BUTTON1_MASK);
+			robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+			robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
 		}
 	},
-	PICK_AUTO_STOP("end mine") {
+	PICK_AUTO_STOP("end mine", new Tasks[] { PICK_AUTO_START }) {
 		@Override
 		public void execute(Robot robot) {
-			robot.mouseRelease(InputEvent.BUTTON1_MASK);
 		}
 	},
 	MOVE_FORWARD_START("FORWARD_START", true) {
@@ -38,7 +44,7 @@ public enum Tasks implements Executable {
 			robot.keyPress(KeyEvent.VK_W);
 		}
 	},
-	MOVE_FORWARD_STOP("FORWARD_STOP", new Tasks[] { Tasks.MOVE_FORWARD_START }) {
+	MOVE_FORWARD_STOP("FORWARD_STOP", new Tasks[] { MOVE_FORWARD_START }) {
 		@Override
 		public void execute(Robot robot) {
 			robot.keyRelease(KeyEvent.VK_W);
@@ -50,7 +56,7 @@ public enum Tasks implements Executable {
 			robot.keyPress(KeyEvent.VK_S);
 		}
 	},
-	MOVE_BACKWARD_STOP("BACKWARD_STOP", new Tasks[] { Tasks.MOVE_BACKWARD_START }) {
+	MOVE_BACKWARD_STOP("BACKWARD_STOP", new Tasks[] { MOVE_BACKWARD_START }) {
 		@Override
 		public void execute(Robot robot) {
 			robot.keyRelease(KeyEvent.VK_S);
@@ -62,7 +68,7 @@ public enum Tasks implements Executable {
 			robot.keyPress(KeyEvent.VK_A);
 		}
 	},
-	MOVE_LEFT_STOP("LEFT_STOP", new Tasks[] { Tasks.MOVE_LEFT_START }) {
+	MOVE_LEFT_STOP("LEFT_STOP", new Tasks[] { MOVE_LEFT_START }) {
 		@Override
 		public void execute(Robot robot) {
 			robot.keyRelease(KeyEvent.VK_A);
@@ -74,19 +80,18 @@ public enum Tasks implements Executable {
 			robot.keyPress(KeyEvent.VK_D);
 		}
 	},
-	MOVE_RIGHT_STOP("RIGHT_STOP", new Tasks[] { Tasks.MOVE_RIGHT_START }) {
+	MOVE_RIGHT_STOP("RIGHT_STOP", new Tasks[] { MOVE_RIGHT_START }) {
 		@Override
 		public void execute(Robot robot) {
 			robot.keyRelease(KeyEvent.VK_D);
 		}
 	},
-	SIGHT_UP_LEFT("S_UL", true) {
+	SIGHT_UP_LEFT("S_UL") {
 		@Override
 		public void execute(Robot robot) {
-			//robot.mouseMove(1, 1);
 		}
 	},
-	SIGHT_UP("S_U", true) {
+	SIGHT_UP("S_U") {
 		@Override
 		public void execute(Robot robot) {
 		}
@@ -126,11 +131,6 @@ public enum Tasks implements Executable {
 		public void execute(Robot robot) {
 		}
 	},
-	INVENTORY_NUMBER("INV_NUMB") {
-		@Override
-		public void execute(Robot robot) {
-		}
-	},
 	;
 
 	private final boolean continuous;
@@ -142,11 +142,11 @@ public enum Tasks implements Executable {
 	private final String identifier;
 
 	private Tasks(final String identifier) {
-		this(identifier, false, null);
+		this(identifier, false, new Tasks[0]);
 	}
 
 	private Tasks(final String identifier, final boolean continuous) {
-		this(identifier, continuous, null);
+		this(identifier, continuous, new Tasks[0]);
 	}
 
 	private Tasks(final String identifier, final Tasks[] cancels) {
@@ -154,11 +154,11 @@ public enum Tasks implements Executable {
 	}
 
 	private Tasks(final String identifier, final boolean continuous, final Tasks[] cancels) {
-		this.identifier = identifier;
 		this.cancels = cancels;
+		this.identifier = identifier;
 		this.continuous = continuous;
 	}
-	
+
 	public String getIdentifier() {
 		return identifier;
 	}
@@ -200,6 +200,12 @@ public enum Tasks implements Executable {
 			}
 		}
 		return null;
+	}
+
+	public static EventMessage getEventMessage(Tasks task, Source source, int value) {
+		EventMessage.Builder builder = EventMessage.newBuilder();
+		builder.setDuration(2000).setNamedEvent(task.getIdentifier()).setSource(source).setTimestamp(System.currentTimeMillis()).setValue(0);
+		return builder.build();
 	}
 
 }

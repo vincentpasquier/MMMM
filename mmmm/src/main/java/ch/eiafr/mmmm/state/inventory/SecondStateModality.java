@@ -26,7 +26,7 @@ public final class SecondStateModality implements State {
 	public void execute(final Robot robot) {
 		robot.keyPress(KeyEvent.VK_0 + inventoryNumber);
 		robot.keyRelease(KeyEvent.VK_0 + inventoryNumber);
-		System.out.println("BLU THE FUCK OUT ! [" + inventoryNumber + "]");
+		System.out.println(SecondStateModality.class.getName() + "[" + inventoryNumber + "]");
 	}
 
 }

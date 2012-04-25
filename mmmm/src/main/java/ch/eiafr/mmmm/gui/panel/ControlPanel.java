@@ -3,13 +3,11 @@
  */
 package ch.eiafr.mmmm.gui.panel;
 
-import javax.swing.JLabel;
+import java.awt.BorderLayout;
+
 import javax.swing.JPanel;
 
 import ch.eiafr.mmmm.gui.singleton.Console;
-
-
-import java.awt.BorderLayout;
 
 /**
  * @author yannickjemmely
