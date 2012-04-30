@@ -38,6 +38,9 @@ public class KinectPanel extends JPanel {
 		ManagedButton mine = new ManagedButton(Tasks.PICK_MINE);
 		mine.addToComponent(this);
 		
+		ManagedButton block = new ManagedButton(Tasks.PUT_BLOCK);
+		block.addToComponent(this);
+		
 		ManagedButton startButton = new ManagedButton(Tasks.PICK_AUTO_START);
 		startButton.addToComponent(this);
 		

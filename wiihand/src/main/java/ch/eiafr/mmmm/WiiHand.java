@@ -25,7 +25,7 @@ import ch.eiafr.mmmm.net.SocketThreadedTasksSender;
 public class WiiHand {
 	public static void main(String[] args) {
 
-		// E84ECECD5999 127.0.0.1 4444
+		// E84ECEC3CA3E 127.0.0.1 4444
 		if (args.length < 3) {
 			System.err.println("usage: wiihand wii-mac-address ipadress port");
 			System.exit(0);
@@ -61,6 +61,7 @@ public class WiiHand {
 		private final int port;
 		private final List<String> gestureMeanings;
 		private final AtomicBoolean automaticButton = new AtomicBoolean(false);
+		private final AtomicBoolean beggined = new AtomicBoolean(false);
 
 		private WiiHandHandler(final Wiimote mote, final String ipadress, final int port) {
 			this.mote = mote;
@@ -99,7 +100,9 @@ public class WiiHand {
 			if (event.isValid()) {
 				String gesture = gestureMeanings.get(event.getId());
 				if (gesture.equals(Tasks.PICK_MINE.getIdentifier())) {
-					gesture = automaticButton.get() ? Tasks.PICK_AUTO_START.getIdentifier() : gesture;
+					gesture = automaticButton.get() ? (beggined.get() ? Tasks.PICK_AUTO_STOP.getIdentifier() : Tasks.PICK_AUTO_START.getIdentifier())
+							: gesture;
+					beggined.set(!beggined.get());
 				}
 				EventMessage.Builder builder = EventMessage.newBuilder().setDuration(4000).setNamedEvent(gesture)
 						.setSource(EventMessage.Source.WII_HAND).setTimestamp(System.currentTimeMillis());
@@ -130,7 +133,7 @@ public class WiiHand {
 				break;
 			case Wiimote.BUTTON_A:
 				automaticButton.set(true);
-				break;
+				return;
 			default:
 				builder.clear();
 				return;
@@ -157,7 +160,7 @@ public class WiiHand {
 				break;
 			case Wiimote.BUTTON_A:
 				automaticButton.set(false);
-				break;
+				return;
 			default:
 				builder.clear();
 				return;

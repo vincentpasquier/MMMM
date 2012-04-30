@@ -18,12 +18,18 @@ public class IrCamera {
 
 	public static void main(String[] args) {
 
+		// 127.0.0.1 4444
+		if (args.length < 2) {
+			System.err.println("usage: wiihand ipadress port");
+			System.exit(0);
+		}
+
 		SimpleMoteFinder simpleMoteFinder = new SimpleMoteFinder();
 		final Mote mote = simpleMoteFinder.findMote();
 		mote.enableIrCamera();
 		mote.setReportMode(ReportModeRequest.DATA_REPORT_0x36);
 
-		mote.addIrCameraListener(new IRListener(Areas.AREAS, Areas.CENTER));
+		mote.addIrCameraListener(new IRListener(args[0], Integer.parseInt(args[1]), Areas.AREAS, Areas.CENTER));
 
 		try {
 			Thread.sleep(600000000l);
@@ -38,10 +44,14 @@ public class IrCamera {
 
 	public static final class IRListener implements IrCameraListener {
 
+		private final String ipadress;
+		private final int port;
 		private final List<Area> areas;
 		private Area currentArea;
 
-		public IRListener(final List<Area> areas, final Area center) {
+		public IRListener(final String ipadress, final int port, final List<Area> areas, final Area center) {
+			this.ipadress = ipadress;
+			this.port = port;
 			this.areas = areas;
 			this.currentArea = center;
 		}
@@ -66,7 +76,8 @@ public class IrCamera {
 			for (Area area : areas) {
 				if (area.isIn(point)) {
 					currentArea = area;
-					new SocketThreadedTasksSender("localhost", 4444, Tasks.getEventMessage(currentArea.getTask(), Source.WII_HEAD, 0)).execute();
+					System.out.println(currentArea.getTask());
+					new SocketThreadedTasksSender(ipadress, port, Tasks.getEventMessage(currentArea.getTask(), Source.WII_HEAD, 0)).execute();
 					return;
 				}
 			}
@@ -79,16 +90,16 @@ public class IrCamera {
 		}
 
 		public static final double DEFAULT_SCALE = 0.20;
-		public static final double BIGGER_SCALE = 0.6;
+		public static final double BIGGER_SCALE = 0.60;
 
-		public static final Area UP_RIGHT = new Area(15, 15, DEFAULT_SCALE, DEFAULT_SCALE, Tasks.SIGHT_UP_RIGHT);
+		public static final Area UP_RIGHT = new Area(10, 10, DEFAULT_SCALE, DEFAULT_SCALE, Tasks.SIGHT_UP_RIGHT);
 		public static final Area UP = Area.buildAppendToX(UP_RIGHT, BIGGER_SCALE, DEFAULT_SCALE, Tasks.SIGHT_UP);
 		public static final Area UP_LEFT = Area.buildAppendToX(UP, DEFAULT_SCALE, DEFAULT_SCALE, Tasks.SIGHT_UP_LEFT);
 
 		public static final Area RIGHT = Area.buildAppendToY(UP_RIGHT, DEFAULT_SCALE, BIGGER_SCALE, Tasks.SIGHT_RIGHT);
 		public static final Area CENTER = Area.buildAppendToX(RIGHT, BIGGER_SCALE, BIGGER_SCALE, Tasks.SIGHT_CENTER);
 		public static final Area LEFT = Area.buildAppendToX(CENTER, DEFAULT_SCALE, DEFAULT_SCALE, Tasks.SIGHT_LEFT);
-
+		
 		public static final Area DOWN_RIGHT = Area.buildAppendToY(RIGHT, DEFAULT_SCALE, DEFAULT_SCALE, Tasks.SIGHT_DOWN_RIGHT);
 		public static final Area DOWN = Area.buildAppendToX(DOWN_RIGHT, BIGGER_SCALE, DEFAULT_SCALE, Tasks.SIGHT_DOWN);
 		public static final Area DOWN_LEFT = Area.buildAppendToX(DOWN, DEFAULT_SCALE, DEFAULT_SCALE, Tasks.SIGHT_DOWN_LEFT);
@@ -100,7 +111,7 @@ public class IrCamera {
 
 	public static final class Area {
 
-		public static final double X_Y_LIMIT = 900.0;
+		public static final double X_Y_LIMIT = 800.0;
 
 		private final double xbegin;
 		private final double ybegin;
